@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TypeScript Lab 1</title>
+</head>
+<body>
+  <h1>TypeScript Lab 1</h1>
+  <p>Відкрийте консоль браузера, щоб побачити вивід завдань 3 (variables, functions).</p>
+  <button id="run-icecream">Запустити калькулятор морозива</button>
+
+  <script type="module">
+    import './dist/index.js';
+    document.getElementById('run-icecream').addEventListener('click', async () => {
+      const mod = await import('./dist/icecream.js');
+      mod.runIceCreamCalculator();
+    });
+  </script>
+</body>
+</html>
