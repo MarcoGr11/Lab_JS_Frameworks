@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Бібліотека – Лаба 3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="p-3">
+
+<div class="container">
+    <h1 class="mb-4">Система бібліотеки</h1>
+
+    <!-- Alerts -->
+    <div id="alerts"></div>
+
+    <!-- Очистити всі дані -->
+    <div class="mb-3 text-end">
+        <button id="reset-all" type="button" class="btn btn-outline-danger btn-sm">Очистити всі дані</button>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="tabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" id="books-tab" data-bs-toggle="tab" data-bs-target="#books" type="button" role="tab">Книги</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab">Користувачі</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="borrow-tab" data-bs-toggle="tab" data-bs-target="#borrow" type="button" role="tab">Позичання</button>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-3">
+        <!-- Books Tab -->
+        <div class="tab-pane fade show active" id="books" role="tabpanel">
+            <form id="book-form" class="row g-2 mb-3">
+                <div class="col-md-3">
+                    <input id="book-title" type="text" class="form-control" placeholder="Назва книги">
+                </div>
+                <div class="col-md-3">
+                    <input id="book-author" type="text" class="form-control" placeholder="Автор">
+                </div>
+                <div class="col-md-2">
+                    <input id="book-year" type="text" class="form-control" placeholder="Рік">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Додати</button>
+                </div>
+                <div class="col-md-2">
+                    <input id="book-search" type="text" class="form-control" placeholder="Пошук">
+                </div>
+            </form>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th><th>Назва</th><th>Автор</th><th>Рік</th><th>Статус</th><th></th>
+                </tr>
+                </thead>
+                <tbody id="books-tbody"></tbody>
+            </table>
+            <nav>
+                <ul class="pagination" id="books-pagination"></ul>
+            </nav>
+            <div id="books-counter" class="text-muted"></div>
+        </div>
+
+        <!-- Users Tab -->
+        <div class="tab-pane fade" id="users" role="tabpanel">
+            <form id="user-form" class="row g-2 mb-3">
+                <div class="col-md-2">
+                    <input id="user-id" type="text" class="form-control" placeholder="ID">
+                </div>
+                <div class="col-md-3">
+                    <input id="user-name" type="text" class="form-control" placeholder="Імʼя">
+                </div>
+                <div class="col-md-3">
+                    <input id="user-email" type="email" class="form-control" placeholder="Email">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Додати</button>
+                </div>
+            </form>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th><th>Імʼя</th><th>Email</th><th>Позичено книг</th><th></th>
+                </tr>
+                </thead>
+                <tbody id="users-tbody"></tbody>
+            </table>
+        </div>
+
+        <!-- Borrow Tab -->
+        <div class="tab-pane fade" id="borrow" role="tabpanel">
+            <div class="row g-2 mb-3">
+                <div class="col-md-4">
+                    <select id="borrow-user" class="form-select"></select>
+                </div>
+                <div class="col-md-4">
+                    <select id="borrow-book" class="form-select"></select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button id="borrow-btn" type="button" class="btn btn-success">Позичити</button>
+                </div>
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th><th>Книга</th><th>Користувач</th><th>Статус</th><th></th>
+                </tr>
+                </thead>
+                <tbody id="borrow-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="dist/bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
