@@ -1,61 +1,31 @@
 <template>
-  <article class="card" :class="ageClass">
-    <img class="avatar" :src="user.photo" :alt="fullName" />
-    <div class="info">
-      <h3 class="name">{{ fullName }}</h3>
-      <p class="meta">
-        <span class="badge">{{ user.gender }}</span>
-        <span class="dot">•</span>
-        <span class="position">{{ user.position }}</span>
-      </p>
-
-      <p v-if="user.age > 18" class="age">Age: {{ user.age }}</p>
-
-      <div class="hobbies">
-        <h4>Hobbies</h4>
-        <ul>
-          <li v-for="(h, i) in user.hobbies" :key="i">{{ h }}</li>
-        </ul>
+  <article
+      class="w-full max-w-sm rounded-xl border border-slate-200 bg-white shadow-sm p-4 flex flex-col justify-start"
+  >
+    <div class="flex items-center gap-3 mb-2">
+      <img :src="user.photo" alt="avatar" class="w-14 h-14 rounded-full border" />
+      <div>
+        <h3 class="font-semibold text-gray-900">{{ user.firstName }} {{ user.lastName }}</h3>
+        <p class="text-gray-500 text-sm flex items-center gap-1">
+          <span class="px-2 py-0.5 text-xs rounded-full bg-slate-100 border border-slate-200">{{ user.gender }}</span>
+          •
+          <span>{{ user.position }}</span>
+        </p>
       </div>
+    </div>
+
+    <p class="text-sm text-gray-700 mb-1">Age: {{ user.age }}</p>
+
+    <div class="text-sm text-gray-700">
+      <p class="font-medium text-gray-800">Hobbies</p>
+      <ul class="list-disc list-inside text-gray-600">
+        <li v-for="(hobby, i) in user.hobbies" :key="i">{{ hobby }}</li>
+      </ul>
     </div>
   </article>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { User } from '@/types'
-
-const props = defineProps<{ user: User }>()
-const fullName = `${props.user.firstName} ${props.user.lastName}`
-const ageClass = computed(() => (props.user.age < 21 ? 'is-young' : 'is-adult'))
+import type { User } from '../types'
+defineProps<{ user: User }>()
 </script>
-
-<style scoped>
-.card {
-  display: grid;
-  grid-template-columns: 96px 1fr;
-  gap: 14px;
-  padding: 14px;
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0,0,0,.04);
-}
-.card.is-young { border-color: #c7d2fe; background: #f8fafc; }
-.card.is-adult { border-color: #bbf7d0; background: #f7fee7; }
-
-.avatar {
-  width: 96px; height: 96px; object-fit: cover; border-radius: 12px;
-}
-
-.info { display: grid; gap: 6px; }
-.name { margin: 0; font-size: 18px; font-weight: 700; }
-.meta { margin: 0; color: #475569; display: flex; align-items: center; gap: 8px; }
-.badge { padding: 2px 8px; border-radius: 999px; background: #e2e8f0; font-size: 12px; }
-.dot { opacity: .6; }
-.position { font-weight: 500; }
-
-.age { margin: 2px 0 0; color: #0f172a; }
-.hobbies h4 { margin: 8px 0 4px; font-size: 14px; color: #334155; }
-.hobbies ul { margin: 0; padding-left: 18px; }
-</style>

@@ -1,12 +1,12 @@
-export type Gender = 'male' | 'female'
+export type Level = 'Junior' | 'Middle' | 'Senior';
 
-export interface User {
-    id: number
-    firstName: string
-    lastName: string
-    gender: Gender
-    age: number
-    position: string
-    photo: string
-    hobbies: string[]
+export interface Participant {
+    id: number;
+    name: string;
+    group: string;
+    level: Level;
+    email: string;
+    github?: string;
+    dob: string;
+    createdAt: number;
 }
