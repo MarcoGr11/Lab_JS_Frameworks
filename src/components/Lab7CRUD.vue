@@ -1,7 +1,6 @@
 <template>
   <section class="space-y-6">
     <p class="text-slate-600">
-      Розбиття на компоненти, localStorage, пошук, сортування, редагування та видалення.
     </p>
 
     <RegisterForm

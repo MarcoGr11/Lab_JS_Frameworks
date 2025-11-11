@@ -1,4 +1,4 @@
-export type Level = 'Junior' | 'Middle' | 'Senior';
+export type Level = 'Student' | 'Junior' | 'Middle' | 'Senior';
 
 export interface Participant {
     id: number;

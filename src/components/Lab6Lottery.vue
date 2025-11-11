@@ -1,6 +1,5 @@
 <template>
   <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6">
-    <!-- Форма реєстрації -->
     <form
         class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 items-end"
         @submit.prevent="handleAdd"
@@ -12,7 +11,7 @@
             type="text"
             required
             class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Напр. Oleh Hrytsenko"
+            placeholder="Напр. Taras Shevchenko"
         />
       </div>
 
@@ -23,7 +22,7 @@
             type="text"
             required
             class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="КН-11, ІПЗ-21 ..."
+            placeholder="ІПЗ-321-4..."
         />
       </div>
 
@@ -44,6 +43,7 @@
             v-model="level"
             class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
+          <option value="student">student</option>
           <option value="junior">junior</option>
           <option value="middle">middle</option>
           <option value="senior">senior</option>
@@ -91,11 +91,13 @@
       </div>
 
       <div class="text-sm text-slate-500">
-        Учасників: <span class="font-semibold text-slate-800">{{ filteredParticipants.length }}</span>
+        Учасників:
+        <span class="font-semibold text-slate-800">
+          {{ filteredParticipants.length }}
+        </span>
       </div>
     </div>
 
-    <!-- Таблиця учасників -->
     <div class="overflow-x-auto">
       <table class="min-w-full text-sm">
         <thead>
@@ -141,6 +143,7 @@
             <span v-else class="text-slate-400">—</span>
           </td>
         </tr>
+
         <tr v-if="filteredParticipants.length === 0">
           <td colspan="6" class="px-3 py-4 text-center text-slate-500">
             Немає учасників для цієї групи
@@ -150,35 +153,33 @@
       </table>
     </div>
 
-    <!-- Блок вибору переможців -->
     <div class="flex flex-wrap items-center gap-3 border-t pt-4">
-      <div class="flex items-center gap-2">
-        <span class="text-sm text-slate-600">Кількість переможців:</span>
-        <input
-            v-model.number="winnersCount"
-            type="number"
-            min="1"
-            :max="participants.length || 1"
-            class="w-20 px-2 py-1.5 rounded-md border border-slate-300 text-sm"
-        />
-      </div>
-
       <button
           class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 active:bg-emerald-800 transition disabled:opacity-40 disabled:cursor-not-allowed"
-          :disabled="participants.length === 0 || winnersCount < 1"
-          @click="pickWinners"
+          :disabled="isNewWinnerDisabled"
+          @click="pickNewWinner"
       >
-        Обрати переможців
+        New winner
       </button>
 
-      <div v-if="winners.length" class="text-sm text-slate-700 flex flex-wrap gap-2">
+      <div
+          v-if="winners.length"
+          class="text-sm text-slate-700 flex flex-wrap gap-2 items-center"
+      >
         <span class="font-semibold">Переможці:</span>
+
         <span
             v-for="w in winners"
             :key="w.id"
-            class="px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs"
+            class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs"
         >
           {{ w.name }} ({{ w.group }})
+          <button
+              class="ml-1 text-red-500 hover:text-red-700"
+              @click="removeWinner(w.id)"
+          >
+            ✕
+          </button>
         </span>
       </div>
     </div>
@@ -188,7 +189,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
-type Level = 'junior' | 'middle' | 'senior'
+type Level = 'student' | 'junior' | 'middle' | 'senior'
 
 interface Participant {
   id: number
@@ -206,18 +207,17 @@ const participants = ref<Participant[]>([
     group: 'KН-11',
     email: 'oleh@example.com',
     level: 'junior',
-    github: 'https://github.com/oleh',
+    github: 'https://github.com/oleh'
   },
   {
     id: 2,
     name: 'Iryna Melnyk',
     group: 'IPZ-21',
     email: 'iryna@example.com',
-    level: 'middle',
-  },
+    level: 'middle'
+  }
 ])
 
-// form state
 const name = ref('')
 const group = ref('')
 const email = ref('')
@@ -225,10 +225,10 @@ const level = ref<Level>('junior')
 const github = ref('')
 const error = ref('')
 
-// filters & winners
 const groupFilter = ref<'all' | string>('all')
-const winnersCount = ref(1)
+
 const winners = ref<Participant[]>([])
+
 const winnersIds = computed(() => new Set(winners.value.map(w => w.id)))
 
 const uniqueGroups = computed(() => {
@@ -240,6 +240,17 @@ const uniqueGroups = computed(() => {
 const filteredParticipants = computed(() => {
   if (groupFilter.value === 'all') return participants.value
   return participants.value.filter(p => p.group === groupFilter.value)
+})
+
+
+const isNewWinnerDisabled = computed(() => {
+  if (!participants.value.length) return true
+  if (winners.value.length >= 3) return true
+
+  const available = participants.value.filter(
+      p => !winnersIds.value.has(p.id)
+  )
+  return available.length === 0
 })
 
 function handleAdd() {
@@ -260,7 +271,7 @@ function handleAdd() {
     group: group.value.trim(),
     email: email.value.trim(),
     level: level.value,
-    github: github.value.trim() || undefined,
+    github: github.value.trim() || undefined
   })
 
   name.value = ''
@@ -270,20 +281,25 @@ function handleAdd() {
   level.value = 'junior'
 }
 
-function pickWinners() {
-  winners.value = []
+function pickNewWinner() {
+  if (isNewWinnerDisabled.value) return
 
-  const count = Math.min(
-      Math.max(1, winnersCount.value || 1),
-      participants.value.length,
+  const pool = participants.value.filter(
+      p => !winnersIds.value.has(p.id)
   )
 
-  const pool = [...participants.value]
-  for (let i = 0; i < count; i += 1) {
-    const index = Math.floor(Math.random() * pool.length)
-    const [picked] = pool.splice(index, 1)
-    if (picked) winners.value.push(picked)
+  if (!pool.length) return
+
+  const index = Math.floor(Math.random() * pool.length)
+  const picked = pool[index]
+
+  if (picked) {
+    winners.value.push(picked)
   }
+}
+
+function removeWinner(id: number) {
+  winners.value = winners.value.filter(w => w.id !== id)
 }
 
 function shortGithub(url: string): string {

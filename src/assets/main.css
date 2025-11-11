@@ -3,7 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- Головні глобальні стилі --- */
 body {
     @apply bg-gray-50 text-gray-800 min-h-screen antialiased;
     font-family:
@@ -20,8 +19,6 @@ body {
             'Helvetica Neue',
             sans-serif;
 }
-
-/* --- Прибираємо старий layout Vue --- */
 #app {
     max-width: none;
     margin: 0;
@@ -30,7 +27,6 @@ body {
     place-items: unset;
 }
 
-/* --- Посилання --- */
 a {
     color: #2563eb;
     text-decoration: none;

@@ -19,7 +19,7 @@
         <h2 class="text-3xl font-semibold text-slate-900 mb-6">
           Lab 7 – Registration & CRUD
         </h2>
-        <Lab7Lottery />
+        <Lab7Crud />
       </section>
     </div>
   </main>
@@ -28,6 +28,6 @@
 <script setup lang="ts">
 import UsersList from './components/UsersList.vue';
 import Lab6Lottery from './components/Lab6Lottery.vue';
-import Lab7Lottery from './components/Lab7Lottery.vue';
+import Lab7Crud from './components/Lab7CRUD.vue';
 
 </script>
