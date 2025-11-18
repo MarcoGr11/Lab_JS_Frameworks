@@ -6,6 +6,12 @@
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "baseUrl": "src",
+    "paths": {
+      "@/*": [
+        "*"
+      ]
+    },
+
     "isolatedModules": true,
     "strict": true,
     "jsx": "preserve",
